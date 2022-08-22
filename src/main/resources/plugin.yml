@@ -1,0 +1,11 @@
+name: SOSNapthePE
+version: '${project.version}'
+main: me.anhkhoaaa.SOSNapthePE
+api-version: 1.18
+depend: [ floodgate , Thesieutoc]
+authors: [ Anhkhoaaa ]
+
+commands:
+  sosnapthe:
+    description: "nạp thẻ pe"
+    aliases: [ napthepe ]
