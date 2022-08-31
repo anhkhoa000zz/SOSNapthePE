@@ -1,6 +1,6 @@
 name: SOSNapthePE
 version: '${project.version}'
-main: me.anhkhoaaa.SOSNapthePE
+main: me.anhkhoaaa.sosnapthe.SOSNapthePE
 api-version: 1.18
 depend: [ floodgate , Thesieutoc]
 authors: [ Anhkhoaaa ]

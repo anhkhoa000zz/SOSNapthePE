@@ -1,4 +1,4 @@
-package me.anhkhoaaa;
+package me.anhkhoaaa.sosnapthe;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,23 +9,31 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import org.geysermc.cumulus.*;
+import org.geysermc.cumulus.response.*;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
 
 public final class SOSNapthePE extends JavaPlugin {
 
 
+    private static FloodgateApi floodgateApi;
+
     @Override
     public void onEnable() {
+        reloadConfig();
         saveDefaultConfig();
-        getLogger().info(ChatColor.GREEN+"Enable!");
+        floodgateApi = FloodgateApi.getInstance();
+        getLogger().log(Level.INFO, ChatColor.GREEN+"Enable!");
 
     }
 
     @Override
     public void onDisable() {
-        getLogger().info(ChatColor.RED+"Disable!");
+        getLogger().log(Level.INFO, ChatColor.RED+"Disable!");
         saveConfig();
+        floodgateApi = null;
     }
 
     @Override
@@ -34,40 +42,43 @@ public final class SOSNapthePE extends JavaPlugin {
             if (args.length > 0) {
                 if (args[0].equalsIgnoreCase("reload") && sender.hasPermission("op")) {
                     reloadConfig();
-                    sender.sendMessage("reload thành công");
+                    sender.sendMessage(getStuffConfig("reload"));
                     return false;
+
                 }
             }
             if (args.length == 0) {
                 Player player = sender.getServer().getPlayer(sender.getName());
-                if (FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
-                    FloodgatePlayer pePlayer = FloodgateApi.getInstance().getPlayer(player.getUniqueId());
+                if (floodgateApi.isFloodgatePlayer(player.getUniqueId())) {
+                    FloodgatePlayer pePlayer = floodgateApi.getPlayer(player.getUniqueId());
                     pePlayer.sendForm(CustomForm.builder()
                             .title(getStuffConfig("title"))
-                            .dropdown("Chọn Loại Thẻ:", "Viettel","Mobifone","Vinaphone","Vietnamobile","Zing","Gate","Garena")
-                            .dropdown("Chọn Giá Thẻ:\n§f§l(§4§l*§f§l) §r§aChọn sai mất thẻ đấy nha!", "10.000VND", "20.000VND","50.000VND","100.000VND","200.000VND","500.000VND","1.000.000VND")
-                            .input("Nhập seri:","seri tại đây")
-                            .input("Nhập mã thẻ:","mã thẻ tại đây")
-                            .toggle(getStuffConfig("xacnhan"))
+                            .dropdown(getStuffConfig("chonLoaiThe"), "Viettel","Mobifone","Vinaphone","Vietnamobile","Zing","Gate","Garena")
+                            .dropdown(getStuffConfig("chonGiaThe"), "10.000VND", "20.000VND","50.000VND","100.000VND","200.000VND","500.000VND","1.000.000VND")
+                            .input(getStuffConfig("input1"),getStuffConfig("placeholderInput1"))
+                            .input(getStuffConfig("input2"),getStuffConfig("placeholderInput2"))
+                            .toggle(chatConfigColor(getStuffConfig("xacnhan")))
                             .responseHandler((form, responseData) -> {
-                                if (!(form.parseResponse(responseData).isCorrect())) {
-                                    player.sendMessage("Bạn đã hủy nạp thẻ!");
+                                CustomFormResponse myForm = form.parseResponse(responseData);
+                                if (!(myForm.isCorrect())) {
+                                    player.sendMessage(getStuffConfig("huyNap"));
                                 } else {
-                                    if (form.parseResponse(responseData).getToggle(4)) {
-                                        String cardName = getCardName(form.parseResponse(responseData).getDropdown(0));
-                                        String cardPrice = getCardPrice(form.parseResponse(responseData).getDropdown(1));
-                                        String seri = form.parseResponse(responseData).getInput(2);
-                                        String maThe = form.parseResponse(responseData).getInput(3);
-                                        if (Objects.equals(seri, "") || Objects.equals(maThe, "")) {
-                                            player.sendMessage("Thiếu thông tin seri hoặc mã thẻ!");
+                                    if (myForm.getToggle(4)) {
+                                        String cardName = getCardName(myForm.getDropdown(0));
+                                        String cardPrice = getCardPrice(myForm.getDropdown(1));
+                                        String seri = myForm.getInput(2);
+                                        String maThe = myForm.getInput(3);
+                                        if (seri.isEmpty() || maThe.isEmpty()) {
+                                            player.sendMessage(getStuffConfig("thieuThongTin"));
                                         } else {
+                                            // chua du trinh dung api nen lam tam nhu nay :)
                                             Bukkit.dispatchCommand(player, "donate choosecard "+ cardName);
                                             Bukkit.dispatchCommand(player, "donate choosecardprice "+ cardPrice);
                                             player.chat(seri);
                                             player.chat(maThe);
                                         }
                                     } else {
-                                        player.sendMessage("Bạn đã hủy nạp thẻ!");
+                                        player.sendMessage(getStuffConfig("huyNap"));
                                     }
                                 }
                             })
@@ -114,6 +125,18 @@ public final class SOSNapthePE extends JavaPlugin {
         }
     }
     public String getStuffConfig(String key){
-        return getConfig().getString(key);
+        StringBuilder allMessage = new StringBuilder();
+        for (String message : getConfig().getStringList(key)){
+            allMessage.append(message).append("\n");
+        }
+        return chatConfigColor(allMessage.toString());
     }
+
+    public String chatConfigColor(String fullString){
+        return fullString.replace("&", "§");
+    }
+
+
 }
+
+

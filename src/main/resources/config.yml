@@ -1,2 +1,30 @@
-title: "§e§lSOSCRAFT.NET §f| §c§lNẠP THẺ"
-xacnhan: "Vui lòng check kĩ lại thẻ để tránh các trường hợp mất thẻ bạn nhé.\n  §a♦§f Nạp qua kênh §e§lMOMO §f§l(§6§l+30%§f§l)\n§e0796802399\n  §aTrương Nguyễn Anh Khoa"
+#UI nạp thẻ
+# Khi dùng nên chỉnh MENU trong config thesieutoc = false
+title:
+  - "&e&lSOSCRAFT.NET &f| &c&lNẠP THẺ"
+chonLoaiThe:
+  - "Chọn Loại Thẻ:"
+chonGiaThe:
+  - "Chọn Giá Thẻ:"
+  - "&f&l(&4&l*&f&l) &r&aChọn sai mất thẻ đấy nha!"
+input1: # input cho nhập seri
+  - "Nhập seri:"
+input2: # input cho nhập mã thẻ
+  - "Nhập mã thẻ:"
+placeholderInput1:
+  - "seri tại đây"
+placeholderInput2:
+  - "mã thẻ tại đây"
+
+# Message - bla bla...
+huyNap:
+  - "Bạn đã hủy nạp thẻ!"
+thieuThongTin:
+  - "Thiếu thông tin seri hoặc mã thẻ!"
+reload:
+  - "reload thành công"
+xacnhan:
+  - "Xác nhận nạp thẻ"
+  - "Bật nút lên!"
+
+
