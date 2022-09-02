@@ -6,6 +6,6 @@ depend: [ floodgate , Thesieutoc]
 authors: [ Anhkhoaaa ]
 
 commands:
-  sosnapthe:
+  napthepe:
     description: "nạp thẻ pe"
-    aliases: [ napthepe ]
+    aliases: [ donatepe, dntpe ]

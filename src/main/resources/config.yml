@@ -27,4 +27,26 @@ xacnhan:
   - "Xác nhận nạp thẻ"
   - "Bật nút lên!"
 
+#Có thể xóa những loại thẻ ko muốn
+loaiThe:
+  - "Mobifone"
+  - "Viettel"
+  - "Vietnamobile"
+  - "Zing"
+  - "Vinaphone"
+  - "Gate"
+  - "Garena"
+
+
+#Có thể xóa những giá thẻ ko muốn (chưa hỗ trợ add màu!)
+giaThe:
+  - "10000" # 10.000VND
+  - "20.000VND"
+  - "30000"
+  - "50000"
+  - "100000"
+  - "200000"
+  - "300000"
+  - "500000"
+  - "1000000"
 
